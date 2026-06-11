@@ -5,7 +5,7 @@ using Soenneker.Azure.NotificationHubs.Service.Abstract;
 namespace Soenneker.Azure.NotificationHubs.Service.Registrars;
 
 /// <summary>
-/// A .NET client generated from the Slack OpenAPI schema, updated daily
+/// An async thread-safe singleton for the Azure Notification Hubs client
 /// </summary>
 public static class AzureNotificationHubServiceRegistrar
 {

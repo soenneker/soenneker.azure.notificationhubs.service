@@ -3,7 +3,7 @@
 [![](https://img.shields.io/nuget/dt/soenneker.azure.notificationhubs.service.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.azure.notificationhubs.service/)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Azure.NotificationHubs.Service
-### A .NET client generated from the Slack OpenAPI schema, updated daily
+### An async thread-safe singleton for the Azure Notification Hubs client
 
 ## Installation
 
