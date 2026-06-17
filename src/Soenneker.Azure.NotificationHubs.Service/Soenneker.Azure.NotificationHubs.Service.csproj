@@ -44,9 +44,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
-        <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.832" />
+<PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.832" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.796" />
     </ItemGroup>
 </Project>
