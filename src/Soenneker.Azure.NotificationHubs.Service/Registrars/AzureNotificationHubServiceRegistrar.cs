@@ -12,6 +12,8 @@ public static class AzureNotificationHubServiceRegistrar
     /// <summary>
     /// Adds <see cref="IAzureNotificationHubService"/> as a singleton service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddAzureNotificationHubServiceAsSingleton(this IServiceCollection services)
     {
         services.TryAddSingleton<IAzureNotificationHubService, AzureNotificationHubService>();
@@ -22,6 +24,8 @@ public static class AzureNotificationHubServiceRegistrar
     /// <summary>
     /// Adds <see cref="IAzureNotificationHubService"/> as a scoped service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddAzureNotificationHubServiceAsScoped(this IServiceCollection services)
     {
         services.TryAddScoped<IAzureNotificationHubService, AzureNotificationHubService>();
