@@ -4,41 +4,55 @@
 
 # Soenneker.Azure.NotificationHubs.Service
 
-An async thread-safe singleton for the Azure Notification Hubs client.
+Creates and caches an Azure SDK `NotificationHubClient` from application configuration.
 
-## Install
+## Installation
 
 ```bash
 dotnet add package Soenneker.Azure.NotificationHubs.Service
 ```
 
-## Quick start
+## Configuration
 
-```csharp
-using Soenneker.Azure.NotificationHubs.Service.Registrars;
-using Microsoft.Extensions.DependencyInjection;
-
-var services = new ServiceCollection();
-var result = services.AddAzureNotificationHubServiceAsSingleton();
+```json
+{
+  "Azure": {
+    "NotificationHubs": {
+      "ConnectionString": "Endpoint=sb://...",
+      "HubName": "notifications",
+      "EnableTestSend": false
+    }
+  }
+}
 ```
 
-Adds `IAzureNotificationHubService` as a singleton service.
+`ConnectionString` and `HubName` are required. `EnableTestSend` is optional; when omitted, the Azure SDK's default client behavior is used.
 
-## What you get
+Keep the connection string in a secret provider or environment variables such as `Azure__NotificationHubs__ConnectionString`. Choose a listen-only, send-only, or full-access policy according to what the consuming service actually does.
 
-- `IAzureNotificationHubService` — An async thread-safe singleton for the Azure Notification Hubs client.
-- `AzureNotificationHubServiceRegistrar` — An async thread-safe singleton for the Azure Notification Hubs client.
+## Registration and use
 
-## API at a glance
+```csharp
+using Microsoft.Azure.NotificationHubs;
+using Soenneker.Azure.NotificationHubs.Service.Abstract;
+using Soenneker.Azure.NotificationHubs.Service.Registrars;
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `IAzureNotificationHubService.Get(cancellationToken)` | Gets the Azure Notification Hubs client. | A task containing the client. |
-| `AzureNotificationHubServiceRegistrar.AddAzureNotificationHubServiceAsSingleton(services)` | Adds `IAzureNotificationHubService` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `AzureNotificationHubServiceRegistrar.AddAzureNotificationHubServiceAsScoped(services)` | Adds `IAzureNotificationHubService` as a scoped service. | The same service collection, so additional registrations can be chained. |
+builder.Services.AddAzureNotificationHubServiceAsSingleton();
 
-## Practical notes
+public sealed class HubClientConsumer(IAzureNotificationHubService hubService)
+{
+    public async ValueTask<NotificationHubClient> GetClient(
+        CancellationToken cancellationToken) =>
+        await hubService.Get(cancellationToken);
+}
+```
 
-- Cancellation stops pending work; it does not undo work that has already completed.
-- Calls that return a cached or singleton value reuse the same instance until the owning service is disposed.
-- Dispose instances you own when their scope ends so held resources can be released.
+## Lifecycle
+
+- The client is created on the first `Get()` call and reused afterward.
+- Concurrent initialization shares the same cached operation.
+- Configuration changes do not rebuild an initialized client; dispose and replace the service to use a new hub or rotated connection string.
+- Missing required configuration fails initialization.
+- Let DI dispose the service. A scoped registration creates one cached client per scope; the singleton registration creates one for the application.
+
+Most applications should use `Soenneker.Azure.NotificationHubs.Installations` or `Soenneker.Azure.NotificationHubs.Senders`, which register this service automatically and expose task-focused APIs.
