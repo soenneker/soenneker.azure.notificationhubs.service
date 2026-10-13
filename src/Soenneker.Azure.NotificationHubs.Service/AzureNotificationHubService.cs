@@ -25,8 +25,8 @@ public sealed class AzureNotificationHubService : IAzureNotificationHubService
 
     private NotificationHubClient CreateClient()
     {
-        var connectionString = _configuration.GetValueStrict<string>("Azure:NotificationHubs:ConnectionString");
-        var hubName = _configuration.GetValueStrict<string>("Azure:NotificationHubs:HubName");
+        var connectionString = _configuration.GetStringStrict("Azure:NotificationHubs:ConnectionString");
+        var hubName = _configuration.GetStringStrict("Azure:NotificationHubs:HubName");
         var enableTestSend = _configuration.GetValue<bool?>("Azure:NotificationHubs:EnableTestSend");
 
         _logger.LogDebug("Creating Azure Notification Hubs client ({hubName})...", hubName);
