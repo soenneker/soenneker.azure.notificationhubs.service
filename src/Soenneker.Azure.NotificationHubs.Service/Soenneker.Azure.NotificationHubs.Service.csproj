@@ -47,8 +47,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.2.0" />
-        <PackageReference Include="Soenneker.Extensions.Configuration" Version="11.0.913" />
-        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.881" />
+        <PackageReference Include="Soenneker.Extensions.Configuration" Version="11.0.914" />
+        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="11.0.884" />
     </ItemGroup>
     <ItemGroup>
         <!-- Override the vulnerable transitive dependency. -->
